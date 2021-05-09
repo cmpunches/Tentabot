@@ -135,7 +135,7 @@ class IRC_Event:
 
         if verb == 'MODE':
             self.type = EventType.USER_MODE_CHANGE
-            self.sender = Sender( sender, SenderType.USER )
+            self.sender = Sender( sender, SenderType.SYSTEM )
             self.message = splat[-1]
             self.channel = None
             return

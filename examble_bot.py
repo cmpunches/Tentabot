@@ -14,14 +14,27 @@ def main():
     args = parser.parse_args()
 
     #suppress_events = [ EventType.NOTICE, EventType.MOTD ]
-    suppress_events = [ EventType.MOTD ]
-    #suppress_events = []
+    #suppress_events = [ EventType.MOTD ]
+    suppress_events = []
 
+    nickserv_pass = None
 
-    server_details = ConnectionContext( server=args.server, port=int( args.port ), realname=args.realname, nick=args.nick )
+    if args.password:
+        nickserv_pass = args.password
+
+    server_details = ConnectionContext(
+        server=args.server,
+        port=int( args.port ),
+        realname=args.realname,
+        nick=args.nick,
+        nickserv_pass=nickserv_pass
+    )
 
     # spin up a client connected to the control server and channel
     client = IRC_Client( server_details, suppress_events=suppress_events )
+
+    # identify with nickserv
+    client.identify( nickserv_pass )
 
     # join the control channel
     client.join_channel( args.channel )

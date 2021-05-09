@@ -2,6 +2,7 @@ import socket
 import time
 from .IRC_Event import *
 
+
 class ConnectionContext:
     def __init__( self, server, port, nick, realname, nickserv_pass=None ):
         self.server = server
@@ -28,7 +29,7 @@ class IRC_Client:
 
     def set_user( self ):
         self.send_raw_quote(
-            "USER {0} HOSTNAME * /{1} :{2}\n".format(
+            "USER {0} HOSTNAME * /{1} :{2}".format(
                 self.server_details.nick,
                 self.server_details.nick,
                 self.server_details.nick,
@@ -37,28 +38,34 @@ class IRC_Client:
         )
 
     def set_nick( self, nick ):
-        self.send_raw_quote( "NICK {0}\n".format( nick ) )
+        self.send_raw_quote( "NICK {0}".format( nick ) )
 
     def identify( self, nickserv_pass=None ):
         if nickserv_pass is not None:
             self.send_raw_quote(
-                "NICKSERV IDENTIFY {0} {1}\n".format(
+                "NICKSERV IDENTIFY {0} {1}".format(
                     self.server_details.nick,
-                    self.server_details.nickserv_pass
+                    nickserv_pass
+                )
+            )
+            self.send_raw_quote(
+                "PRIVMSG NICKSERV IDENTIFY {0} {1}".format(
+                    self.server_details.nick,
+                    nickserv_pass
                 )
             )
 
-    def speak_in_channel( self, channel, msg ):
-        self.send_raw_quote( "PRIVMSG {0} {1}\n".format( channel, msg ) )
+    def send_message(self, channel, msg):
+        self.send_raw_quote( "PRIVMSG {0} {1}".format( channel, msg ) )
 
     def join_channel( self, channel ):
         # join the channel
-        self.send_raw_quote( "JOIN {0}\n".format( channel ) )
+        self.send_raw_quote( "JOIN {0}".format( channel ) )
 
     def ping_respond( self, event ):
-        raw_message = 'PONG ' + event.sender.host + '\r\n'
+        raw_message = 'PONG ' + event.sender.host
         self.send_raw_quote( raw_message )
-        print( IRC_Event( 'PONG ' + event.sender.host + '\r\n' ) )
+        print( IRC_Event( 'PONG ' + event.sender.host ) )
 
     def delimit_buffer(self, buffer ):
         tmp = buffer.split("\r\n")
@@ -67,9 +74,9 @@ class IRC_Client:
         return tmp
 
     def send_raw_quote( self, raw ):
-        self.client.send( bytes( raw, "UTF-8" ) )
+        self.client.send( bytes( "{0}\r\n".format( raw ), "UTF-8" ) )
 
-    def get_buffer(self):
+    def get_raw_buffer(self):
         time.sleep(1)
         # Get the raw message response and return it
         resp = self.client.recv(8192).decode("UTF-8")
@@ -87,7 +94,6 @@ class IRC_Client:
     # processes event from that loop
     # assumes a user event unless it's a server_message
     def process_event( self, event ):
-
         # give the user a print event
         if event.type not in self.suppress_events:
             self.print_event( event.as_json() )
@@ -102,7 +108,7 @@ class IRC_Client:
         # connection loop
         while True:
             # grab whatever is in the socket into buffer
-            buffer = self.get_buffer()
+            buffer = self.get_raw_buffer()
 
             # delimit the buffer by carriage return, newline to represent raw IRC events
             raw_events = self.delimit_buffer(buffer)
