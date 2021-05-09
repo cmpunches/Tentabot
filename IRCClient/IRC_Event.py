@@ -59,6 +59,7 @@ class EventType(Enum):
     TOPIC = auto()
     SERVER_ERROR = auto()
     KICK = auto()
+    QUIT = auto()
     # 474
     BANNED = 474
     # 473
@@ -183,6 +184,13 @@ class IRC_Event:
 
         if verb == 'TOPIC':
             self.type = EventType.TOPIC
+            self.sender = Sender( sender, SenderType.USER )
+            self.message = splat[2]
+            self.channel = splonk[2]
+            return
+
+        if verb == 'QUIT':
+            self.type = EventType.QUIT
             self.sender = Sender( sender, SenderType.USER )
             self.message = splat[2]
             self.channel = splonk[2]
