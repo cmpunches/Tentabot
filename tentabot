@@ -5,7 +5,7 @@ import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(description="An example IRC bot in python.")
+    parser = argparse.ArgumentParser(description="An event-driven IRC bot in python.")
     parser.add_argument('--server', help="The IRC server to connect to.", required=True )
     parser.add_argument('--nick', help="The username to use.", required=True )
     parser.add_argument('--realname', help="The real_name value to use.", required=True )
