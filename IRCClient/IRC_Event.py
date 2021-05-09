@@ -200,10 +200,10 @@ class IRC_Event:
         return {
                    'type': self.type.name,
                    'sender': self.sender.as_dict(),
-                    'message': self.message,
-                    'timestamp': self.timestamp,
-                    'channel': self.channel,
-                    '_raw_message': self._raw_message
+                   'message': self.message,
+                   'timestamp': self.timestamp,
+                   'channel': self.channel,
+                   '_raw_message': self._raw_message
         }
 
     def as_json(self):
