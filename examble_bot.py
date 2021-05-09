@@ -1,0 +1,35 @@
+from IRCClient import *
+
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="An example IRC bot in python.")
+    parser.add_argument('--server', help="The IRC server to connect to." )
+    parser.add_argument('--nick', help="The username to use." )
+    parser.add_argument('--realname', help="The real_name value to use." )
+    parser.add_argument('--port', help="The port to connect to." )
+    parser.add_argument('--channel', help="The channel to autojoin." )
+    parser.add_argument('--password', help="The nickserv password." )
+
+    args = parser.parse_args()
+
+    #suppress_events = [ EventType.NOTICE, EventType.MOTD ]
+    suppress_events = [ EventType.MOTD ]
+    #suppress_events = []
+
+
+    server_details = ConnectionContext( server=args.server, port=int( args.port ), realname=args.realname, nick=args.nick )
+
+    # spin up a client connected to the control server and channel
+    client = IRC_Client( server_details, suppress_events=suppress_events )
+
+    # join the control channel
+    client.join_channel( args.channel )
+
+    # run the main loop
+    client.run()
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    main()
