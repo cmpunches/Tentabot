@@ -1,14 +1,16 @@
-from IRCClient import *
+#!/usr/bin/env python3
 
+from IRCClient import *
 import argparse
+
 
 def main():
     parser = argparse.ArgumentParser(description="An example IRC bot in python.")
-    parser.add_argument('--server', help="The IRC server to connect to." )
-    parser.add_argument('--nick', help="The username to use." )
-    parser.add_argument('--realname', help="The real_name value to use." )
-    parser.add_argument('--port', help="The port to connect to." )
-    parser.add_argument('--channel', help="The channel to autojoin." )
+    parser.add_argument('--server', help="The IRC server to connect to.", required=True )
+    parser.add_argument('--nick', help="The username to use.", required=True )
+    parser.add_argument('--realname', help="The real_name value to use.", required=True )
+    parser.add_argument('--port', help="The port to connect to.", required=True )
+    parser.add_argument('--channel', help="The channel to autojoin.", required=True )
     parser.add_argument('--password', help="The nickserv password." )
 
     args = parser.parse_args()
