@@ -103,7 +103,7 @@ class IRC_Event:
         if splat[0].startswith('PONG'):
             self.type = EventType.CLIENT_PONG
             # embed this in the IRC server class so that you can replace known values
-            self.sender = Sender( raw_message, SenderType.LOCAL )
+            self.sender = Sender( raw_message.split(' ')[-1], SenderType.LOCAL )
             self.message = None
             self.channel = splat[0].split(' ')[1]
             return
