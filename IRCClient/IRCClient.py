@@ -42,16 +42,15 @@ class IRC_Client:
 
     def identify( self, nickserv_pass=None ):
         if nickserv_pass is not None:
+#            self.send_raw_quote(
+#                "NICKSERV IDENTIFY {0} {1}".format(
+#                    self.server_details.nick,
+#                    nickserv_pass
+#                )
+#            )
             self.send_raw_quote(
-                "NICKSERV IDENTIFY {0} {1}".format(
-                    self.server_details.nick,
-                    nickserv_pass
-                )
-            )
-            self.send_raw_quote(
-                "PRIVMSG NICKSERV IDENTIFY {0} {1}".format(
-                    self.server_details.nick,
-                    nickserv_pass
+                "PRIVMSG NICKSERV IDENTIFY {0}".format(
+                    self.server_details.nick
                 )
             )
 
