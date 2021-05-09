@@ -87,19 +87,6 @@ class IRC_Client:
     # processes event from that loop
     # assumes a user event unless it's a server_message
     def process_event( self, event ):
-        #MOTD = auto()
-        #SERVER_PING = auto()
-        #CLIENT_PING = auto()
-        #CL#IENT_PONG = auto()
-        #N#OTICE = auto()
-        #C#HANNEL_JOIN = auto()
-        #USER_MODE_CHANGE = auto()
-        #USER_MESSAGE = auto()
-        #RCV_PRIVATE_MESSAGE = auto()
-        #TOPIC = auto()
-        #SERVER_ERROR = auto()
-        # unhandled event type
-        #UNKNOWN = auto()
 
         # give the user a print event
         if event.type not in self.suppress_events:
